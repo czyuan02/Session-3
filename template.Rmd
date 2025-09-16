@@ -40,6 +40,20 @@ litters_df = janitor::clean_names(litters_df)
 names(litters_df)
 ```
 
+##import dataset
+```{r}
+pups_df = 
+  read_csv(
+    "data_import_examples/FAS_litters.csv",
+    skip =3,
+    na = c("NA",".","")
+    )
+
+pupu_df = 
+  janitor::clean_names(pups_df)
+```
+
+
 
 
 # Section 1
