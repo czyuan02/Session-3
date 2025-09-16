@@ -1,9 +1,46 @@
 ---
-title: "Simple document"
-output: html_document
+title: "Data Import"
+output: guthub_document
 ---
 
-I'm an R Markdown document! 
+```{r}
+library(tidyverse)
+```
+
+let's import a dataset.
+
+```{r}
+litters_df = 
+  read_csv( "data_import_examples/FAS_litters.csv")
+```
+
+looka r your data!
+
+```{r}
+names(litters_df)
+```
+
+```{r}
+litters_df
+```
+
+sometimes skimming data is neat?
+```{r}
+skimr::skim(litters_df)
+```
+
+##fix the missingness
+```{r}
+litters_df =
+  read_csv("data_import_examples/FAS_litters.csv", na = c("NA",".",""))
+```
+
+```{r}
+litters_df = janitor::clean_names(litters_df)
+names(litters_df)
+```
+
+
 
 # Section 1
 
