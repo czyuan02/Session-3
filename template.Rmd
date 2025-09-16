@@ -85,26 +85,3 @@ pulse_df =
 litters_df_base = 
   read_csv("data_import_examples/FAS_litters.csv")
 ```
-
-
-
-
-
-
-
-
-
-# Section 1
-
-Here's a **code chunk** that samples from 
-a _normal distribution_:
-
-```{r}
-samp = rnorm(100)
-length(samp)
-```
-
-# Section 2
-
-I can take the mean of the sample, too!
-The mean is `r mean(samp)`.
