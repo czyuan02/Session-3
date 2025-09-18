@@ -5,6 +5,7 @@ output: html_document
 
 ```{r}
 library(tidyverse)
+library(haven)
 
 options(tibble.print_min = 3)
 ```
@@ -120,5 +121,73 @@ mutate(litters_df,
 )
 ```
 
+Create a variable that subtracts 7 from PD pivot
 ```{r}
+mutate(pups_df, pivot_minus7 = pd_pivot - 7)
+```
+
+Create a variable that is the sum of all the PD variables
+```{r}
+mutate(pups_df, pd_sum = pd_ears + pd_eyes + pd_pivot + pd_walk)
+```
+
+
+arrange
+
+```{r}
+head(arrange(litters_df, group, pups_born_alive), 10)
+```
+
+```{r}
+arrange(litters_df, pups_born_alive)
+arrange(litters_df, desc(group), pups_born_alive)
+
+arrange(litters_df, gd0_weight)
+```
+
+## PIPES
+
+```{r}
+litters_df_raw = 
+    read_csv("data_import_examples/FAS_litters.csv", na = c("NA", ".", ""))
+litters_df_clean_names = janitor::clean_names(litters_df_raw)
+
+litters_df_selected_cols = select(litters_df_clean_names, -pups_survive)
+litters_df_with_vars = 
+  mutate(
+    litters_df_selected_cols, 
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group))
+litters_df_with_vars_without_missing = 
+  drop_na(litters_df_with_vars, wt_gain)
+litters_df_with_vars_without_missing
+```
+
+Use pipes to aviod all this
+## COMMAND +SHIFT + M " |> "
+
+```{r}
+litters_df = 
+  read_csv("data_import_examples/FAS_litters.csv", na = c("NA", ".", "")) |> 
+  janitor::clean_names() |> 
+  select(-pups_survive) |> 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)) |> 
+  drop_na(wt_gain)
+
+litters_df
+
+```
+
+
+```{r}
+pups_df = 
+    read_csv("data_import_examples/FAS_pups.csv", na = c("NA", "."), skip = 3) |>
+  janitor::clean_names() |> 
+  filter(sex == 1) |> 
+  select(-pd_ears) |> 
+  mutate(pd_pivot_gt7 = pd_pivot > 7)
+```
+
 
