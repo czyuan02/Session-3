@@ -1,0 +1,124 @@
+---
+title: "Data_Manipulation"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+
+options(tibble.print_min = 3)
+```
+
+```{r}
+litters_df = 
+    read_csv("data_import_examples/FAS_litters.csv", na = c("NA", ".", ""))
+    
+litters_df = 
+    janitor::clean_names(litters_df)
+
+pups_df = 
+    read_csv("data_import_examples/FAS_pups.csv", skip = 3,na = c("NA", ".",""))
+    
+pups_df = 
+    janitor::clean_names(pups_df)
+```
+
+## 'select'
+
+'select' select varibales from my dataframe
+
+```{r}
+select(litters_df, group, litter_number, gd0_weight)
+```
+
+```{r}
+select(litters_df, group:gd_of_birth)
+```
+
+```{r}
+select(litters_df, -group)
+select(litters_df, -(group:gd_of_birth))
+```
+
+select by prefix
+
+```{r}
+select(litters_df,group,starts_with("gd"))
+```
+
+rearrange by selecting
+```{r}
+select(litters_df, starts_with("dg"), group)
+select(litters_df, litter_number, everything())
+```
+
+rename by selecting
+```{r}
+select(litters_df, GROUP = group, everything())
+rename(litters_df, GROUP =group)
+```
+
+what if only select one variable..?
+```{r}
+select(litters_df,group)
+
+pull(litters_df, group)
+```
+
+LA code
+```{r}
+select(pups_df,litter_number, sex, pd_ears)
+```
+
+
+## 'filter
+
+use 'filter() to filter out rows.
+```{r}
+filter(litters_df, gd_of_birth ==20, pups_born_alive ==6)
+```
+
+```{r}
+filter(litters_df, pups_born_alive > 5)
+filter(litters_df, pups_born_alive >= 5)
+filter(litters_df, pups_born_alive <= 5)
+```
+
+look for non-matches
+
+```{r}
+filter(litters_df, pups_born_alive !=6)
+```
+
+```{r}
+filter(litters_df, group %in% c ("Con7", "Con8"))
+```
+
+filter out missing row with 'drop_na()'
+
+```{r}
+drop_na (litters_df)
+drop_na(litters_df ,gd0_weight)
+```
+
+
+```{r}
+filter(pups_df, sex == 1)
+```
+
+
+```{r}
+filter (pups_df, sex == 2, pd_walk < 11)
+```
+
+mutate
+
+```{r}
+mutate(litters_df,
+  wt_gain = gd18_weight - gd0_weight,
+  group = str_to_lower(group)
+)
+```
+
+```{r}
+

@@ -16,7 +16,7 @@ litters_df =
   read_csv( "data_import_examples/FAS_litters.csv")
 ```
 
-looka r your data!
+look a r your data!
 
 ```{r}
 names(litters_df)
